@@ -1,7 +1,11 @@
-﻿namespace NTFSScan
+﻿using System.Collections.Generic;
+using System.Security.AccessControl;
+
+namespace NTFSScan
 {
     public class File
     {
+        public IEnumerable<FileSystemAccessRule> AccessRules { get; set; }
         public string Path { get; set; }
         public string Name { get; set; }
         public long Size { get; set; }

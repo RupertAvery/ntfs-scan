@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Security.AccessControl;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,17 +20,25 @@ namespace NTFSScan
             listViewFiles.Columns.Clear();
             listViewFiles.Columns.Add("FileName", 150);
             listViewFiles.Columns.Add("Size");
+            listViewFiles.FullRowSelect = true;
+
+            listViewAccessRules.View = View.Details;
+            listViewAccessRules.Columns.Clear();
+            listViewAccessRules.Columns.Add("Identity");
+            listViewAccessRules.Columns.Add("Type");
+            listViewAccessRules.Columns.Add("Rights");
+            listViewAccessRules.FullRowSelect = true;
         }
 
         private void buttonBrowse_Click(object sender, EventArgs e)
         {
             folderBrowserDialog1.ShowDialog();
-         
+
             textBoxPath.Text = folderBrowserDialog1.SelectedPath;
 
             scanner = new Scanner();
 
-            Task.Run(() => scanner.Scan(textBoxPath.Text))
+            Task.Run(() => scanner.ScanFolder(textBoxPath.Text))
                 .ContinueWith(t =>
                 {
                     try
@@ -48,7 +58,7 @@ namespace NTFSScan
 
         private void BuildTreeView(Folder folder)
         {
-            treeViewFolders.Nodes.Clear();
+            ClearNodes();
 
             var rootNode = CreateNode(folder);
 
@@ -73,6 +83,18 @@ namespace NTFSScan
                 {
                     BuildChildTreeView(subNode, subfolder);
                 }
+            }
+        }
+
+        private void ClearNodes()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => treeViewFolders.Nodes.Clear()));
+            }
+            else
+            {
+                treeViewFolders.Nodes.Clear();
             }
         }
 
@@ -134,6 +156,8 @@ namespace NTFSScan
                     item.Tag = file;
                     item.SubItems.Add(ToFileSizeString(file.Size));
                 }
+
+                ShowAccessRules(folder.AccessRules);
             }
         }
 
@@ -158,6 +182,30 @@ namespace NTFSScan
         }
 
         private void listViewFiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var listView = (ListView)sender;
+            if(listView.SelectedItems.Count > 0)
+            {
+                var item = listView.SelectedItems[0];
+                var file = (File)item.Tag;
+                ShowAccessRules(file.AccessRules);
+            }
+        }
+
+        private void ShowAccessRules(IEnumerable<FileSystemAccessRule> accessRules)
+        {
+            listViewAccessRules.Items.Clear();
+            foreach (var rule in accessRules)
+            {
+                listViewAccessRules.Items.Add(new ListViewItem(new[] { 
+                    rule.IdentityReference.Value, 
+                    rule.AccessControlType.ToString(), 
+                    rule.FileSystemRights.ToString() }
+                ));
+            }
+        }
+
+        private void listViewAccessRules_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

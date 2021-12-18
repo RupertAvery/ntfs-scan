@@ -37,7 +37,7 @@ namespace NTFSScan
             this.textBoxPath = new System.Windows.Forms.TextBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.label1 = new System.Windows.Forms.Label();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.listViewAccessRules = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
             // buttonBrowse
@@ -84,21 +84,22 @@ namespace NTFSScan
             this.label1.TabIndex = 5;
             this.label1.Text = "Select drive or folder:";
             // 
-            // listView1
+            // listViewAccessRules
             // 
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(562, 67);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(226, 351);
-            this.listView1.TabIndex = 6;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listViewAccessRules.HideSelection = false;
+            this.listViewAccessRules.Location = new System.Drawing.Point(562, 67);
+            this.listViewAccessRules.Name = "listViewAccessRules";
+            this.listViewAccessRules.Size = new System.Drawing.Size(226, 351);
+            this.listViewAccessRules.TabIndex = 6;
+            this.listViewAccessRules.UseCompatibleStateImageBehavior = false;
+            this.listViewAccessRules.SelectedIndexChanged += new System.EventHandler(this.listViewAccessRules_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 459);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.listViewAccessRules);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxPath);
             this.Controls.Add(this.listViewFiles);
@@ -118,7 +119,7 @@ namespace NTFSScan
         private TextBox textBoxPath;
         private FolderBrowserDialog folderBrowserDialog1;
         private Label label1;
-        private ListView listView1;
+        private ListView listViewAccessRules;
     }
 
 }
