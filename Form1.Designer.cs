@@ -91,7 +91,7 @@ namespace NTFSScan
             this.listViewAccessRules.HideSelection = false;
             this.listViewAccessRules.Location = new System.Drawing.Point(562, 67);
             this.listViewAccessRules.Name = "listViewAccessRules";
-            this.listViewAccessRules.Size = new System.Drawing.Size(226, 351);
+            this.listViewAccessRules.Size = new System.Drawing.Size(317, 351);
             this.listViewAccessRules.TabIndex = 6;
             this.listViewAccessRules.UseCompatibleStateImageBehavior = false;
             this.listViewAccessRules.SelectedIndexChanged += new System.EventHandler(this.listViewAccessRules_SelectedIndexChanged);
@@ -100,7 +100,7 @@ namespace NTFSScan
             // 
             this.progressBar1.Location = new System.Drawing.Point(12, 424);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(776, 23);
+            this.progressBar1.Size = new System.Drawing.Size(867, 23);
             this.progressBar1.TabIndex = 7;
             // 
             // labelProgress
@@ -117,7 +117,7 @@ namespace NTFSScan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 459);
+            this.ClientSize = new System.Drawing.Size(886, 459);
             this.Controls.Add(this.labelProgress);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.listViewAccessRules);

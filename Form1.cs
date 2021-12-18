@@ -24,9 +24,9 @@ namespace NTFSScan
 
             listViewAccessRules.View = View.Details;
             listViewAccessRules.Columns.Clear();
-            listViewAccessRules.Columns.Add("Identity");
+            listViewAccessRules.Columns.Add("Identity", 150);
             listViewAccessRules.Columns.Add("Type");
-            listViewAccessRules.Columns.Add("Rights");
+            listViewAccessRules.Columns.Add("Rights", 100);
             listViewAccessRules.FullRowSelect = true;
         }
 
