@@ -31,7 +31,6 @@ namespace NTFSScan
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
             this.buttonBrowse = new System.Windows.Forms.Button();
             this.treeViewFolders = new System.Windows.Forms.TreeView();
             this.listViewFiles = new System.Windows.Forms.ListView();
@@ -40,15 +39,6 @@ namespace NTFSScan
             this.label1 = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
             this.SuspendLayout();
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(713, 29);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // buttonBrowse
             // 
@@ -66,6 +56,7 @@ namespace NTFSScan
             this.treeViewFolders.Name = "treeViewFolders";
             this.treeViewFolders.Size = new System.Drawing.Size(185, 351);
             this.treeViewFolders.TabIndex = 2;
+            this.treeViewFolders.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewFolders_AfterSelect);
             // 
             // listViewFiles
             // 
@@ -75,6 +66,7 @@ namespace NTFSScan
             this.listViewFiles.Size = new System.Drawing.Size(353, 351);
             this.listViewFiles.TabIndex = 3;
             this.listViewFiles.UseCompatibleStateImageBehavior = false;
+            this.listViewFiles.SelectedIndexChanged += new System.EventHandler(this.listViewFiles_SelectedIndexChanged);
             // 
             // textBoxPath
             // 
@@ -112,7 +104,6 @@ namespace NTFSScan
             this.Controls.Add(this.listViewFiles);
             this.Controls.Add(this.treeViewFolders);
             this.Controls.Add(this.buttonBrowse);
-            this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "NTFS Scan";
             this.ResumeLayout(false);
@@ -121,8 +112,6 @@ namespace NTFSScan
         }
 
         #endregion
-
-        private Button button1;
         private Button buttonBrowse;
         private TreeView treeViewFolders;
         private ListView listViewFiles;

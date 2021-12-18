@@ -3,37 +3,9 @@ using System.IO;
 
 namespace NTFSScan
 {
-    public class File
-    {
-        public string Path { get; set; }
-        public string Name { get; set; }
-        public File(string path, string name)
-        {
-            Path = path;
-            Name = name;
-        }
-    }
-
-    public class Folder
-    {
-        public IEnumerable<Folder> Folders { get; set;}
-        public IEnumerable<File> Files { get; set;}
-        public string Path { get; set; }
-        public string Name { get; set; }
-        public Folder(string path, string name)
-        {
-            Path = path;
-            Name = name;
-        }
-    }
 
     public class Scanner
     {
-
-        public Scanner()
-        {
-        }
-
         public Folder Scan(string path)
         {
             var folderObject = new Folder(path, Path.GetFileName(path));
@@ -44,7 +16,9 @@ namespace NTFSScan
 
             foreach (var filePath in files)
             {
-                fileObjects.Add(new File(filePath, Path.GetFileName(filePath)));
+                var fileInfo = new FileInfo(filePath);
+
+                fileObjects.Add(new File(filePath, Path.GetFileName(filePath), fileInfo.Length));
             }
 
             folderObject.Files = fileObjects;
