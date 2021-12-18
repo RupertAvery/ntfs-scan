@@ -30,36 +30,63 @@ namespace NTFSScan
             listViewAccessRules.FullRowSelect = true;
         }
 
-        private void buttonBrowse_Click(object sender, EventArgs e)
+        private async void buttonBrowse_Click(object sender, EventArgs e)
         {
             folderBrowserDialog1.ShowDialog();
 
             textBoxPath.Text = folderBrowserDialog1.SelectedPath;
 
             scanner = new Scanner();
+            scanner.OnScanFolder = (folder) => InvokeIfRequired(() => labelProgress.Text = $"Scanning {folder}");
 
-            Task.Run(() => scanner.ScanFolder(textBoxPath.Text))
-                .ContinueWith(t =>
-                {
-                    try
-                    {
-                        if (t.IsCompletedSuccessfully)
-                        {
-                            var folder = t.Result;
-                            BuildTreeView(folder);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                });
+            labelProgress.Text = "Scanning...";
+
+            treeViewFolders.Nodes.Clear();
+            listViewFiles.Items.Clear();
+            listViewAccessRules.Items.Clear();
+
+            //Task.Run(() => scanner.ScanFolder(textBoxPath.Text))
+            //    .ContinueWith(t =>
+            //    {
+            //        try
+            //        {
+            //            if (t.IsCompletedSuccessfully)
+            //            {
+            //                var folder = t.Result;
+
+            //                InvokeIfRequired(() => labelProgress.Text = "Building Tree...");
+
+            //                BuildTreeView(folder);
+
+            //                InvokeIfRequired(() => labelProgress.Text = "Ready");
+            //            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            MessageBox.Show(ex.Message);
+            //        }
+            //    });
+
+            try
+            {
+                var folder = await Task.Run(() => scanner.ScanFolder(textBoxPath.Text));
+
+                InvokeIfRequired(() => labelProgress.Text = "Building Tree...");
+
+                BuildTreeView(folder);
+
+                InvokeIfRequired(() => labelProgress.Text = "Ready");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
+
 
         private void BuildTreeView(Folder folder)
         {
-            ClearNodes();
-
             var rootNode = CreateNode(folder);
 
             foreach (var subfolder in folder.Folders)
@@ -71,7 +98,7 @@ namespace NTFSScan
                 }
             }
 
-            Expand(rootNode);
+            InvokeIfRequired(() => rootNode.Expand());
         }
 
         private void BuildChildTreeView(TreeNode node, Folder folder)
@@ -86,27 +113,15 @@ namespace NTFSScan
             }
         }
 
-        private void ClearNodes()
+        private void InvokeIfRequired(Action action)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action(() => treeViewFolders.Nodes.Clear()));
+                this.Invoke(new Action(() => action()));
             }
             else
             {
-                treeViewFolders.Nodes.Clear();
-            }
-        }
-
-        private void Expand(TreeNode node)
-        {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action(() => node.Expand()));
-            }
-            else
-            {
-                node.Expand();
+                action();
             }
         }
 
@@ -115,14 +130,7 @@ namespace NTFSScan
             var newNode = new TreeNode(folder.Name);
             newNode.Tag = folder;
 
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action(() => treeViewFolders.Nodes.Add(newNode)));
-            }
-            else
-            {
-                treeViewFolders.Nodes.Add(newNode);
-            }
+            InvokeIfRequired(() => treeViewFolders.Nodes.Add(newNode));
 
             return newNode;
         }
@@ -132,14 +140,7 @@ namespace NTFSScan
             var newNode = new TreeNode(folder.Name);
             newNode.Tag = folder;
 
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action(() => node.Nodes.Add(newNode)));
-            }
-            else
-            {
-                node.Nodes.Add(newNode);
-            }
+            InvokeIfRequired(() => node.Nodes.Add(newNode));
 
             return newNode;
         }
@@ -184,7 +185,7 @@ namespace NTFSScan
         private void listViewFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
             var listView = (ListView)sender;
-            if(listView.SelectedItems.Count > 0)
+            if (listView.SelectedItems.Count > 0)
             {
                 var item = listView.SelectedItems[0];
                 var file = (File)item.Tag;
@@ -197,9 +198,9 @@ namespace NTFSScan
             listViewAccessRules.Items.Clear();
             foreach (var rule in accessRules)
             {
-                listViewAccessRules.Items.Add(new ListViewItem(new[] { 
-                    rule.IdentityReference.Value, 
-                    rule.AccessControlType.ToString(), 
+                listViewAccessRules.Items.Add(new ListViewItem(new[] {
+                    rule.IdentityReference.Value,
+                    rule.AccessControlType.ToString(),
                     rule.FileSystemRights.ToString() }
                 ));
             }

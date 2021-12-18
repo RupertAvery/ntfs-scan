@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
@@ -8,6 +9,8 @@ namespace NTFSScan
 
     public class Scanner
     {
+        public Action<string> OnScanFolder { get; set; }
+
         public Folder ScanFolder(string path)
         {
             return GetFolder(path);
@@ -45,6 +48,8 @@ namespace NTFSScan
 
         private Folder GetFolder(string folderPath)
         {
+            OnScanFolder?.Invoke(folderPath);
+
             var folderObject = new Folder(folderPath, Path.GetFileName(folderPath));
 
             folderObject.Files = GetFiles(folderPath);

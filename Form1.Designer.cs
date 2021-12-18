@@ -38,6 +38,8 @@ namespace NTFSScan
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.label1 = new System.Windows.Forms.Label();
             this.listViewAccessRules = new System.Windows.Forms.ListView();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.labelProgress = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonBrowse
@@ -94,11 +96,30 @@ namespace NTFSScan
             this.listViewAccessRules.UseCompatibleStateImageBehavior = false;
             this.listViewAccessRules.SelectedIndexChanged += new System.EventHandler(this.listViewAccessRules_SelectedIndexChanged);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(12, 424);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(776, 23);
+            this.progressBar1.TabIndex = 7;
+            // 
+            // labelProgress
+            // 
+            this.labelProgress.AutoSize = true;
+            this.labelProgress.BackColor = System.Drawing.Color.Transparent;
+            this.labelProgress.Location = new System.Drawing.Point(12, 428);
+            this.labelProgress.Name = "labelProgress";
+            this.labelProgress.Size = new System.Drawing.Size(39, 15);
+            this.labelProgress.TabIndex = 8;
+            this.labelProgress.Text = "Ready";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 459);
+            this.Controls.Add(this.labelProgress);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.listViewAccessRules);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxPath);
@@ -120,6 +141,8 @@ namespace NTFSScan
         private FolderBrowserDialog folderBrowserDialog1;
         private Label label1;
         private ListView listViewAccessRules;
+        private ProgressBar progressBar1;
+        private Label labelProgress;
     }
 
 }
