@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Threading;
 
 namespace NTFSScan
 {
@@ -10,6 +11,13 @@ namespace NTFSScan
     public class Scanner
     {
         public Action<string> OnScanFolder { get; set; }
+
+        private CancellationToken cancellationToken;
+
+        public Scanner(CancellationToken cancellationToken) { 
+            this.cancellationToken = cancellationToken; 
+        }
+
 
         public Folder ScanFolder(string path)
         {
@@ -39,6 +47,10 @@ namespace NTFSScan
 
             foreach (var folderPath in folders)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
                 folderObjects.Add(GetFolder(folderPath));
             }
 
@@ -81,8 +93,6 @@ namespace NTFSScan
             }
             return accessRules;
         }
-
-
     }
 
 }

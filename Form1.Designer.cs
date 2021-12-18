@@ -40,6 +40,7 @@ namespace NTFSScan
             this.listViewAccessRules = new System.Windows.Forms.ListView();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.labelProgress = new System.Windows.Forms.Label();
+            this.buttonStop = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonBrowse
@@ -94,7 +95,6 @@ namespace NTFSScan
             this.listViewAccessRules.Size = new System.Drawing.Size(317, 351);
             this.listViewAccessRules.TabIndex = 6;
             this.listViewAccessRules.UseCompatibleStateImageBehavior = false;
-            this.listViewAccessRules.SelectedIndexChanged += new System.EventHandler(this.listViewAccessRules_SelectedIndexChanged);
             // 
             // progressBar1
             // 
@@ -113,11 +113,22 @@ namespace NTFSScan
             this.labelProgress.TabIndex = 8;
             this.labelProgress.Text = "Ready";
             // 
+            // buttonStop
+            // 
+            this.buttonStop.Location = new System.Drawing.Point(247, 29);
+            this.buttonStop.Name = "buttonStop";
+            this.buttonStop.Size = new System.Drawing.Size(75, 23);
+            this.buttonStop.TabIndex = 9;
+            this.buttonStop.Text = "Stop";
+            this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(886, 459);
+            this.Controls.Add(this.buttonStop);
             this.Controls.Add(this.labelProgress);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.listViewAccessRules);
@@ -143,6 +154,7 @@ namespace NTFSScan
         private ListView listViewAccessRules;
         private ProgressBar progressBar1;
         private Label labelProgress;
+        private Button buttonStop;
     }
 
 }

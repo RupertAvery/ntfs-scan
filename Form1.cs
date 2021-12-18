@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.AccessControl;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -9,6 +10,7 @@ namespace NTFSScan
     public partial class Form1 : Form
     {
         private Scanner scanner;
+        private CancellationTokenSource cancellationTokenSource;
 
         public Form1()
         {
@@ -21,6 +23,7 @@ namespace NTFSScan
             listViewFiles.Columns.Add("FileName", 150);
             listViewFiles.Columns.Add("Size");
             listViewFiles.FullRowSelect = true;
+            listViewFiles.GridLines = true;
 
             listViewAccessRules.View = View.Details;
             listViewAccessRules.Columns.Clear();
@@ -28,6 +31,13 @@ namespace NTFSScan
             listViewAccessRules.Columns.Add("Type");
             listViewAccessRules.Columns.Add("Rights", 100);
             listViewAccessRules.FullRowSelect = true;
+            listViewAccessRules.GridLines = true;
+        }
+
+
+        private void UpdateStatus(string text)
+        {
+            InvokeIfRequired(() => labelProgress.Text = $"Scanning {text}");
         }
 
         private async void buttonBrowse_Click(object sender, EventArgs e)
@@ -36,14 +46,19 @@ namespace NTFSScan
 
             textBoxPath.Text = folderBrowserDialog1.SelectedPath;
 
-            scanner = new Scanner();
-            scanner.OnScanFolder = (folder) => InvokeIfRequired(() => labelProgress.Text = $"Scanning {folder}");
+            cancellationTokenSource = new CancellationTokenSource();
+
+            scanner = new Scanner(cancellationTokenSource.Token);
+
+            //scanner.OnScanFolder = (folder) => InvokeIfRequired(() => labelProgress.Text = $"Scanning {folder}");
+            scanner.OnScanFolder = UpdateStatus;
 
             labelProgress.Text = "Scanning...";
 
             treeViewFolders.Nodes.Clear();
             listViewFiles.Items.Clear();
             listViewAccessRules.Items.Clear();
+
 
             //Task.Run(() => scanner.ScanFolder(textBoxPath.Text))
             //    .ContinueWith(t =>
@@ -59,6 +74,10 @@ namespace NTFSScan
             //                BuildTreeView(folder);
 
             //                InvokeIfRequired(() => labelProgress.Text = "Ready");
+            //            }
+            //            else
+            //            {
+            //                throw t.Exception;
             //            }
             //        }
             //        catch (Exception ex)
@@ -83,7 +102,6 @@ namespace NTFSScan
             }
 
         }
-
 
         private void BuildTreeView(Folder folder)
         {
@@ -115,9 +133,9 @@ namespace NTFSScan
 
         private void InvokeIfRequired(Action action)
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.Invoke(new Action(() => action()));
+                Invoke(action);
             }
             else
             {
@@ -206,9 +224,10 @@ namespace NTFSScan
             }
         }
 
-        private void listViewAccessRules_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
+        private void buttonStop_Click(object sender, EventArgs e)
+        {
+            cancellationTokenSource.Cancel();
         }
     }
 
