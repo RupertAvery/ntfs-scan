@@ -41,6 +41,7 @@ namespace NTFSScan
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.labelProgress = new System.Windows.Forms.Label();
             this.buttonStop = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonBrowse
@@ -123,11 +124,22 @@ namespace NTFSScan
             this.buttonStop.UseVisualStyleBackColor = true;
             this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
             // 
+            // buttonSave
+            // 
+            this.buttonSave.Location = new System.Drawing.Point(328, 29);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(75, 23);
+            this.buttonSave.TabIndex = 10;
+            this.buttonSave.Text = "Save";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(886, 459);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonStop);
             this.Controls.Add(this.labelProgress);
             this.Controls.Add(this.progressBar1);
@@ -155,6 +167,7 @@ namespace NTFSScan
         private ProgressBar progressBar1;
         private Label labelProgress;
         private Button buttonStop;
+        private Button buttonSave;
     }
 
 }

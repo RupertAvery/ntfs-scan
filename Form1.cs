@@ -1,3 +1,4 @@
+using NTFSScan.Database;
 using System;
 using System.Collections.Generic;
 using System.Security.AccessControl;
@@ -228,6 +229,14 @@ namespace NTFSScan
         private void buttonStop_Click(object sender, EventArgs e)
         {
             cancellationTokenSource.Cancel();
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            var folder = (Folder)treeViewFolders.Nodes[0].Tag;
+            var writer = new DirectoryWriter("Server=.;Database=NTFSScan;Trusted_Connection=True;");
+            writer.WriteDirectory(folder);
+            MessageBox.Show("Saved directory to database", "NTFSScan", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 
